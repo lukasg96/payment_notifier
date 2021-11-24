@@ -1,3 +1,5 @@
+# Copyright 2021 Lukas Grunwald
+# Author: Lukas Grunwald <lukas@grunwald-elzach.de>
 #_______________________________________________________________________________
 # Import libs
 import pandas as pd
@@ -237,12 +239,12 @@ def RunAllMails():
 		for i in range(0, N, configs['mail_quota']):
 			daily_mails[i] = mails[i:i+configs['mail_quota']]
 		for dmails in daily_mails:
-			#sendMails(dmails)
+			sendMails(dmails)
 			# the system waits a day 
 			time.sleep(3600*24)
     else:
 		print('sending mail Decoie')
-		#sendMails(mails)
+		sendMails(mails)
     print(stamp() + 'finished triggered operation')
 
 #_______________________________________________________________________________

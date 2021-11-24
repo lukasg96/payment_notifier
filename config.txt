@@ -1,0 +1,54 @@
+#________________________ Introduction _________________________________________
+# Every configuration here has to be set for the program to run.
+
+#________________________ Sender Information ___________________________________
+# Your E-Mail adress over which you want to send the mails.
+
+address: mymail@examplemail.com
+
+# Location of the mail server. You can also specifie an IP adress or localhost
+# in case you use an local e-mail server. This information should be availible
+# on the webside of your e-mail provider.
+
+smtp_server: eample_smtp.examplemail.com
+port: 465
+
+# Most smtp servers restrict the amount of mail one can saend in a day to avoid
+# hackt accounts becomming mass spamers. Therefor when your spreadsheet warents
+# more mails to be sent they are split in groups of the size specified here and
+# whith waiting times in between of one day. If this is not done before the next
+# time trigger that trigger is not activated. For such cases you can thing about
+# getting a professional e-mail account with a higher quota.
+
+mail_quota: 95
+
+#________________________ Spreadsheet __________________________________________
+# File path to the spreadsheet from which the information is drawn and the sheet
+# inside it where the information is located. For information on how to formate
+# the sheet see the README or the example provided on github. 
+
+spead_sheet_path: Source.xlsx
+sheet: main
+
+#________________________ Pre set e-mail text __________________________________
+# The here specified text file contains the massge around the table of
+# information you are sending. So greatings, information on how to pay and
+# such things.
+
+static_mail: StaticMailContent.txt
+
+#________________________ External trigger _____________________________________
+# The here specified text file just contains a "1" or a "0". If you set it to
+# "1" a out of schedule sending is triggerd and it is set back to "0". This is
+# included so you can trigger the sending with other scripts or manualy if you 
+# feel like it.
+
+external_trigger: ExtTrigger.txt
+
+
+#________________________ Writes protocol to ___________________________________
+# Here a file is specified which is appended with a line containing the point in
+# time and the reciver of a send e-mail. So you can lock it up later or do some
+# diagnostics if somthing went wrong.
+
+protocol_file: Prot.txt

@@ -1,0 +1,12 @@
+This line is the subject of the Mail
+#Cut
+Hello #Cut
+,
+
+apparently you need to pay the following:
+#Cut
+thank you for sending the money to the account:
+************************************
+
+thanks and have a nice day,
+my automated mail 

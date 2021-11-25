@@ -18,9 +18,17 @@ def stamp():
 	
 	return st: string that inclues time
 	'''
-	st = datetime.now().strftime("%Y-%m-%d %H:%M:%S")+ ' -> '
+	st = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")+ ' -> '
 	return st 
 
+def ProtSys(st):
+    '''
+    Writes the sytem status in the same file as the mail sending
+    
+    param st: str to write in protocol
+    '''
+    f = open(configs['protocol_file'], 'a+')
+    f.write(stamp() + st + '\n')
 #_______________________________________________________________________________
 # Initialization of settings
 def InitConfig():
@@ -33,7 +41,7 @@ def InitConfig():
     # getpass don't shows what is typed in the terminal other than input()
     passwd = getpass.getpass('E-Mail Password:')
     
-    print(stamp() + 'Reading Config')
+    #print(stamp() + 'Reading Config')
     f = open('config.txt', 'r')
     global configs
     configs = {'address': -1,
@@ -62,7 +70,7 @@ def InitConfig():
             print ('config is missing: ', c)
             # When there are not configs missing the program shuts down.
             exit()
-    print(stamp() + 'Configuration finished')
+    ProtSys('Configuration finished')
 
 #_______________________________________________________________________________
 # read finacial data from excel
@@ -162,7 +170,7 @@ def BildMail(info, ConfigFile):
 #_______________________________________________________________________________
 # Write Mail to Protokoll
 
-def Prot(reciver):
+def ProtMail(reciver):
     '''
     Writs that a may was sent into a file so one can lock it up later.
     Stored is the addres of the reciver and the point in time when the mail
@@ -170,11 +178,33 @@ def Prot(reciver):
     
     param reciver: addres zhe mail was sent to
     '''
-    f = open(configs['protocol_file'], 'a+')
-    f.write('At {} mail send to {}\n'.format(datetime.datetime.today(), reciver))
-    
+    ProtSys('send to {}'.format(reciver))
+
 #_______________________________________________________________________________
 # Sending mail through smtp-server
+def testServerLogin():
+    '''
+    logs onto the server to test login data
+    '''
+    try:
+        server = smtplib.SMTP_SSL(configs['smtp_server'], configs['port'])
+        #Am Server mit seinen persönlichen Zugangsdaten anmelden
+        server.login(configs['address'], passwd)
+        server.ehlo()
+        #close connection
+        server.quit()
+    except smtplib.SMTPAuthenticationError:
+        print("Check Password and Server adress.")
+        ProtSys("Error while logging into SMTP-Server.")
+        ProtSys("Check Password and Server adress.")
+        exit()
+    except ConnectionRefusedError:
+        ProtSys("Connection issue to the SMTP-Server")
+    except smtplib.SMTPDataError:
+        ProtSys("Server Problem")
+        ProtSys("Massage couldn't be send.")
+    ProtSys("Test login successful")
+    print("login valid")
 
 def sendMails(mails):
     '''
@@ -191,31 +221,38 @@ def sendMails(mails):
         # Sending of the massages
         for mail in mails:
             server.send_message(mail)
-            Prot(mail['To'])
+            ProtMail(mail['To'])
         #close connection
         server.quit()
     
     except smtplib.SMTPAuthenticationError:
-        print("Error while logging into SMTP-Server.")
-        print("Check Password and Server adress.")
+        ProtSys("Error while logging into SMTP-Server.")
+        ProtSys("Check Password and Server adress.")
+        exit()
     except ConnectionRefusedError:
-        print("Connection issue to the SMTP-Server")
+        ProtSys("Connection issue to the SMTP-Server")
     except smtplib.SMTPDataError:
-        print("Server Problem")
-        print("Massage couldn't be send.")
+        ProtSys("Server Problem")
+        ProtSys("Massage couldn't be send.")
     finally:
-		print(stamp() + "Mails package sent successfully")
+        ProtSys("Mails package sent successfully")
 
 #_______________________________________________________________________________
 # Do all of the mail
+def divide_chunks(l, n):
+    for i in range(0, len(l), n): 
+        yield l[i:i + n]
+
+
 def RunAllMails():
     '''
     Runs all necessary functions to build and send mails to all persons with
     pending payments.
     '''
-    print(stamp() + 'start triggered operation')
+    ProtSys('start triggered operation')
     # get data on the people in the spredsheet and removing thos without dept.
     data = DelNonDebtor(ReadTable())
+    ProtSys('read data from spreadsheet')
     # define vaiable for all mails
     N = len(data)
     mails = [0] * N
@@ -225,27 +262,30 @@ def RunAllMails():
         # configured the mail for a person
         mails[i] = BildMail(data[i], configs['static_mail'])
         i += 1
+    ProtSys('build mails from data')
     #sending all mail to the server
-    if N >= configs['mail_quota']:
-		print(stamp() + 'mail_quota of {} is larer then Number of Mails {}'\
-			.format(configs['mail_quota'], N))
-		
-		N_days = N / configs['mail_quota']
-		print('The sending of the mails will be done over {} days'\
-			.format(math.ceil(N_days)))
-		
-		# Siliting the list of mails in daily lists 
-		daily_mails = [0] * N_days
-		for i in range(0, N, configs['mail_quota']):
-			daily_mails[i] = mails[i:i+configs['mail_quota']]
-		for dmails in daily_mails:
-			sendMails(dmails)
-			# the system waits a day 
-			time.sleep(3600*24)
+    if N >= int(configs['mail_quota']):
+        ProtSys('mail_quota of {} is larger then Number of Mails {}'\
+            .format(configs['mail_quota'], N))
+        
+        N_days = math.ceil(N / int(configs['mail_quota']))
+        ProtSys('The sending of the mails will be done over {} days'\
+            .format(math.ceil(N_days)))
+        
+        #Spliting mail list
+        daily_mails = list(divide_chunks(mails, int(configs['mail_quota'])))
+        
+        for dmails in daily_mails:
+            sendMails(dmails)
+            #the system waits a day
+            if dmails != daily_mails[-1]:
+                ProtSys('Wait for tomorrow')
+                time.sleep(3600*24)
     else:
-		print('sending mail Decoie')
-		sendMails(mails)
-    print(stamp() + 'finished triggered operation')
+        ProtSys('mails can all be send today')
+        #ProtSys('sending mail Decoie')
+        sendMails(mails)
+    ProtSys('finished triggered operation')
 
 #_______________________________________________________________________________
 # Triggering the sending
@@ -290,8 +330,9 @@ def main():
     and repeadts the process.
     '''
     InitConfig()
+    testServerLogin()
+    ProtSys('Stating main loop and waiting for trigger')
     while True:
-        print(stamp() + 'Stating main loop and waiting for trigger')
         if TimeTrigger() or ExtTrigger():
             RunAllMails()
             #After sending out mails waiting for a day (to avoid spam)

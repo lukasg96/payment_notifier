@@ -40,6 +40,11 @@ sheet: main
 
 static_mail: StaticMailContent.txt
 
+# This text will be sent to a person trying to obtain information about him/her
+# self but does not apeare in the excel file.
+
+static_mail_err: StaticMailforError.txt
+
 #________________________ External trigger _____________________________________
 # The here specified text file just contains a "1" or a "0". If you set it to
 # "1" a out of schedule sending is triggerd and it is set back to "0". This is

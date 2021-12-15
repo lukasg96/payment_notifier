@@ -65,9 +65,7 @@ def MailToOne(reciver):
     data = obtain_data.findDataForAddress(obtain_data.ReadTable(), reciver)
     log_writing.ProtSys('got data of {}'.format(reciver))
     mail = configure_massage.BildMail(data)
-    log_writing.ProtSys('build mail from data of {}'.format(reciver))
     smtp_interactions.sendMails([mail])
-    log_writing.ProtSys('send mail to {}'.format(reciver))
 
 #_______________________________________________________________________________
 # Main function brings all together

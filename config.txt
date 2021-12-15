@@ -13,6 +13,9 @@ address: mymail@examplemail.com
 smtp_server: eample_smtp.examplemail.com
 port: 465
 
+imap_server: eample_imap.examplemail.com
+imap_port: 993
+
 # Most smtp servers restrict the amount of mail one can saend in a day to avoid
 # hackt accounts becomming mass spamers. Therefor when your spreadsheet warents
 # more mails to be sent they are split in groups of the size specified here and

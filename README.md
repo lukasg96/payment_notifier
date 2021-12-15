@@ -52,12 +52,12 @@ sudo apt-get install python3-pip
 1. Install the necessary python libraries using pip
 
 ```
-python3 -m pip install numpy
 python3 -m pip install math
 python3 -m pip install pandas
 python3 -m pip install time
 python3 -m pip install datetime
 python3 -m pip install smtplib
+python3 -m pip install imaplib
 python3 -m pip install email.message
 python3 -m pip install getpass
 ```
@@ -77,6 +77,11 @@ You can open `config.txt` with for example:
 ```
 vim config.txt
 ```
+
+## Warning
+<b>Setup a new mail account for this, which is no used for other staff.</b> This
+script sends automated replies mails to people sending mails to it. This would
+interfere with the communications of a human using the same address.
 
 # Source data
 The script reads its information from a spreadsheet specified in `config.txt` which shall be formatted like in in `Source.xlsx`. The example e-mail addresses in the spreadsheet are no real addresses. So they will result in a error. They therefore have to be changed. It is recommended to first use your own addresses to test your setup.

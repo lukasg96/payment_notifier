@@ -5,6 +5,7 @@
 import time
 
 import config
+import validate_address
 import log_writing
 import obtain_data
 import configure_massage
@@ -78,7 +79,12 @@ def main():
     and repeadts the process.
     '''
     config.InitConfig()
+    
     smtp_interactions.testServerLogin()
+    
+    validate_address.checkAll(obtain_data.ReadTable())
+    
+    print('start')
     log_writing.ProtSys('Stating main loop and waiting for trigger')
     while True:
         questioners = imap_interactions.check_inbox()
@@ -92,7 +98,6 @@ def main():
         else:
             # After checking trigers waiting befor doing it agein
             time.sleep(10)
-
 
 if __name__ == "__main__":
     main()

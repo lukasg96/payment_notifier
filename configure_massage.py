@@ -4,6 +4,7 @@
 from email.message import EmailMessage
 
 import config
+import validate_address
 #_______________________________________________________________________________
 # set mail server data 
 def BuildTable(info):
@@ -39,9 +40,9 @@ def BildMail(info):
     param ConfigFile: filename where the text that is ont changed is stored
     return message: final configured e-mail
     '''
+    
     receiver = [info[2]]
     receiverName = info[1]# only first name ist used
-    
     # Seting up mail
     message = EmailMessage()
     message["From"] = config.settings['address']
@@ -66,4 +67,3 @@ def BildMail(info):
         content = static[1] + receiverName + static[2] + table + static[3]
     message.set_content(content)
     return message
-

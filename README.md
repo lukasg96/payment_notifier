@@ -102,6 +102,9 @@ The script will then ask for the password to the e-mail you specified in
 `config.txt`. It is intentionally not included in the configurations to avoid
 storing it in plan text.
 
+In the beginning all addresses in the spreadsheet are checked for validity this
+can take a few minutes.
+
 Since the script reads the source spreadsheet new every time it send mail, it
 can be run continually, while the user is changing the spreadsheet over time.
 

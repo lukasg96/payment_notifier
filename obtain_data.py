@@ -1,17 +1,19 @@
 # Copyright 2021 Lukas Grunwald
 # Author: Lukas Grunwald <lukas@grunwald-elzach.de>
-#_______________________________________________________________________________
+# ______________________________________________________________________________
 import pandas as pd
 import math
 
 import config
-#_______________________________________________________________________________
+# ______________________________________________________________________________
 # read finacial data from excel
+
+
 def ReadTable():
     '''
-    Reads all the data from the secified excel spead sheet and puts it in a list
-    of one sublist per person (line in speadsheet).
-    
+    Reads all the data from the secified excel spead sheet and puts it in a
+    list of one sublist per person (line in speadsheet).
+
     return data: list variable with all information
     '''
     base_path = config.settings['spead_sheet_path']
@@ -20,11 +22,12 @@ def ReadTable():
     data = df.values.tolist()
     return data
 
+
 def DelNonDebtor(data):
     '''
     Gets a list with all the information and puts people from the list which
     do have to pay something in a new list (so only they get a massage).
-    
+
     param data: list with people with and wothout dept
     return datanew:
     '''
@@ -44,6 +47,7 @@ def DelNonDebtor(data):
         if keep:
             datanew.append(d)
     return datanew
+
 
 def findDataForAddress(data, address):
     for d in data:

@@ -60,6 +60,8 @@ python3 -m pip install smtplib
 python3 -m pip install imaplib
 python3 -m pip install email.message
 python3 -m pip install getpass
+python3 -m pip install py3dns
+python3 -m pip install validate_email_address
 ```
 
 ## Clone the Repository

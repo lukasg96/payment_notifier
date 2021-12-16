@@ -1,20 +1,30 @@
 # Copyright 2021 Lukas Grunwald
 # Author: Lukas Grunwald <lukas@grunwald-elzach.de>
-#_______________________________________________________________________________
-
-# validate-email-address
-# py3dns
+# ______________________________________________________________________________
 from validate_email_address import validate_email
 
 import log_writing
-#_______________________________________________________________________________
+# ______________________________________________________________________________
+
+
 def check_address(address):
+    '''
+    Here the validity of a single mail is checked.
+
+    return: boolean stating if mail is valid
+    '''
     return validate_email(address, verify=True)
-#_______________________________________________________________________________
+
+
 def checkAll(data):
+    '''
+    This function checks all the addresses contained in a given data set.
+
+    param data: data set extracted from source spreadsheet.
+    '''
     allValid = True
     for d in data:
-        if check_address(d[2]) == True or check_address(d[2]) == None:
+        if check_address(d[2]) is True or check_address(d[2]) is None:
             None
         else:
             allValid = False

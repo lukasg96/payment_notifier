@@ -1,17 +1,18 @@
 # Copyright 2021 Lukas Grunwald
 # Author: Lukas Grunwald <lukas@grunwald-elzach.de>
-#_______________________________________________________________________________
+# ______________________________________________________________________________
 import datetime
 
 import config
-#_______________________________________________________________________________
+# ______________________________________________________________________________
 # Triggering the sending
+
 
 def TimeTrigger():
     '''
     Checks if it is the time to send the mails to everyboty with dept.
     In this case I chosen satturday at noon for this.
-    
+
     return: bool vaiable that is ony true if the time is come.
     '''
     now = datetime.datetime.today()
@@ -21,11 +22,12 @@ def TimeTrigger():
     else:
         return False
 
+
 def ExtTrigger():
     '''
     Checks if a external trigger in a specified file is active. If that is the
     case it is set back to 0 and a True is returnd.
-    
+
     return: bool vaiable that is ony true if external trigger was set.
     '''
     out = bool(float(open(config.settings['external_trigger']).read()))

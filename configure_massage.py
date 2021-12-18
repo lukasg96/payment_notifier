@@ -53,7 +53,6 @@ def BildMail(info):
         static = static.split('#Cut\n')
         message["Subject"] = static[0]
         content = static[1]
-        print(content)
 
     else:
         # Getting configured Text

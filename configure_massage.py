@@ -46,7 +46,7 @@ def BildMail(info):
     # Seting up mail
     message = EmailMessage()
     message["From"] = config.settings['address']
-    message["To"] = receiver + ''
+    message["To"] = receiver
 
     if info[0] == -1:
         static = open(config.settings['static_mail_err']).read()

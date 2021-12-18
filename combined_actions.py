@@ -71,6 +71,9 @@ def MailToOne(reciver):
     specified person.
     '''
     data = obtain_data.findDataForAddress(obtain_data.ReadTable(), reciver)
-    log_writing.ProtSys('got data of {}'.format(reciver))
+    if data[0] == -1:
+        log_writing.ProtSys('got mo data of {}'.format(reciver))
+    else:
+        log_writing.ProtSys('got data of {}'.format(reciver))
     mail = configure_massage.BildMail(data)
     smtp_interactions.sendMails([mail])

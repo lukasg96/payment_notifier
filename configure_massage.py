@@ -64,5 +64,5 @@ def BildMail(info):
 
         # puts together all parts of the content
         content = static[1] + receiverName + static[2] + table + static[3]
-    message.set_content(content, "text/plain")
+    message.set_content(content, "utf-8")#"text/plain")
     return message

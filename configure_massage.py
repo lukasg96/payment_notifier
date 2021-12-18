@@ -52,7 +52,7 @@ def BildMail(info):
         static = open(config.settings['static_mail_err']).read()
         static = static.split('#Cut\n')
         message["Subject"] = static[0]
-        content = static[1]
+        content = static[1] + static[2]
 
     else:
         # Getting configured Text
@@ -64,5 +64,5 @@ def BildMail(info):
 
         # puts together all parts of the content
         content = static[1] + receiverName + static[2] + table + static[3]
-    message.set_content(content)
+    message.set_content(content, "text/plain")
     return message

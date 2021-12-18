@@ -32,12 +32,12 @@ def main():
     while True:
         questioners = imap_interactions.check_inbox()
         if triggers.TimeTrigger() or triggers.ExtTrigger():
-            RunAllMails()
+            combined_actions.RunAllMails()
             # After sending out mails waiting for a day (to avoid spam)
             time.sleep(3600*12)
         elif questioners != -1:
             for q in questioners:
-                MailToOne(q)
+                combined_actions.MailToOne(q)
         else:
             # After checking trigers waiting befor doing it agein
             time.sleep(10)

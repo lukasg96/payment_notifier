@@ -35,13 +35,13 @@ def RunAllMails():
         i += 1
     log_writing.ProtSys('build mails from data')
     # sending all mail to the server
-    if N >= int(config.settings['mail_quota']):
+    if N >= int(config.left_quota):
         log_writing.ProtSys(
-            'mail_quota of {} is larger then Number of Mails {}'
-            .format(config.settings['mail_quota'], N)
+            'left mail quota of {} is smaller then Number of Mails {}'
+            .format(config.left_quota, N)
             )
 
-        N_days = math.ceil(N / int(config.settings['mail_quota']))
+        N_days = math.ceil(1 + N / (int(config.settings['mail_quota'] - config.left_quota) ))
         log_writing.ProtSys(
             'The sending of the mails will be done over {} days'
             .format(math.ceil(N_days))
@@ -49,7 +49,7 @@ def RunAllMails():
 
         # Spliting mail list
         daily_mails = list(accessories.divide_chunks(
-            mails, int(config.settings['mail_quota'])
+            mails, config.left_quota, int(config.settings['mail_quota'])
             ))
 
         for dmails in daily_mails:
@@ -58,10 +58,13 @@ def RunAllMails():
             if dmails != daily_mails[-1]:
                 log_writing.ProtSys('Wait for tomorrow')
                 time.sleep(3600*24)
+        # there could be mails left at the last day of the sending
+        config.left_quota = int(config.settings['mail_quota']) - len(daily_mails[-1])
     else:
         log_writing.ProtSys('mails can all be send today')
         # ProtSys('sending mail Decoie')
         smtp_interactions.sendMails(mails)
+        config.left_quota -= len(mails)
     log_writing.ProtSys('finished triggered operation')
 
 
@@ -77,3 +80,4 @@ def MailToOne(reciver):
         log_writing.ProtSys('got data of {}'.format(reciver))
     mail = configure_massage.BildMail(data)
     smtp_interactions.sendMails([mail])
+    config.left_quota -= 1

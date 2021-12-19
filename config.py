@@ -42,6 +42,7 @@ def InitConfig():
             print('Warning: stange line found in config.txt')
             print(line)
             continue
+    global left_quota
     for c in settings:
         if settings[c] == -1:
             print('config is missing: ', c)

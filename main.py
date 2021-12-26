@@ -39,16 +39,20 @@ def main():
         newday = datetime.datetime.now().weekday()
         if newday != day:
             config.left_quota = int(config.settings["mail_quota"])
+            log_writing.ProtSys('reset Quota to {}'.format(config.left_quota))
         day = newday
         if config.left_quota > 1:
+            log_writing.ProtSys('Quota left')
             questioners = imap_interactions.check_inbox()
             if triggers.TimeTrigger() or triggers.ExtTrigger():
                 combined_actions.RunAllMails()
+                log_writing.ProtSys('set Quota to {}'.format(config.left_quota))
                 # After sending out mails waiting for a day (to avoid spam)
                 time.sleep(3600*12)
             elif questioners != -1:
                 for q in questioners:
                     combined_actions.MailToOne(q)
+                    log_writing.ProtSys('set Quota to {}'.format(config.left_quota))
         else:
             # After checking trigers waiting befor doing it agein
             time.sleep(10)

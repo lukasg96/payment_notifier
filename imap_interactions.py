@@ -22,7 +22,11 @@ def check_inbox():
     # login to server
     imap.login(config.settings['address'], config.passwd)
     # go to inbox
-    imap.select('Inbox')
+    try:
+        imap.select('Inbox')
+    except ConnectionResetError:
+        log_writing.ProtSys('did not get Inbox')
+        return []
     # grap unseen mails
     tmp, data = imap.search(None, 'UNSEEN')
     c = data[0].split()

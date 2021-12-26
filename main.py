@@ -42,7 +42,6 @@ def main():
             log_writing.ProtSys('reset Quota to {}'.format(config.left_quota))
         day = newday
         if config.left_quota > 1:
-            log_writing.ProtSys('Quota left')
             questioners = imap_interactions.check_inbox()
             if triggers.TimeTrigger() or triggers.ExtTrigger():
                 combined_actions.RunAllMails()

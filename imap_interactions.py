@@ -17,15 +17,18 @@ def check_inbox():
 
     return senders: list of senders of unseen mauls.
     '''
-    # connect to host using SSL
-    imap = imaplib.IMAP4_SSL(config.settings['imap_server'])
-    # login to server
-    imap.login(config.settings['address'], config.passwd)
-    # go to inbox
     try:
+        # connect to host using SSL
+        imap = imaplib.IMAP4_SSL(config.settings['imap_server'])
+        # login to server
+        imap.login(config.settings['address'], config.passwd)
+        # go to inbox
         imap.select('Inbox')
     except ConnectionResetError:
         log_writing.ProtSys('did not get Inbox')
+        return []
+    except:
+        log_writing.ProtSys('other error in checking inbox')
         return []
     # grap unseen mails
     tmp, data = imap.search(None, 'UNSEEN')

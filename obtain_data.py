@@ -41,7 +41,7 @@ def DelNonDebtor(data):
             # Therefor here the program checks also for that.
             if math.isnan(d[i]):
                 d[i] = 0.0
-            if d[i] != 0.0:
+            elif d[i] != 0.0:
                 keep = True
             i += 2
         if keep:

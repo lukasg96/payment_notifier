@@ -24,18 +24,18 @@ def check_inbox():
         imap.login(config.settings['address'], config.passwd)
         # go to inbox
         imap.select('Inbox')
+        # grap unseen mails
+        tmp, data = imap.search(None, 'UNSEEN')
+        if data == [b'']:
+            imap.close()
+            return -1
     except ConnectionResetError:
         log_writing.ProtSys('did not get Inbox')
         return []
     except:
         log_writing.ProtSys('other error in checking inbox')
         return []
-    # grap unseen mails
-    tmp, data = imap.search(None, 'UNSEEN')
     c = data[0].split()
-    if data == [b'']:
-        imap.close()
-        return -1
 
     # loop over all new mails
     senders = []
